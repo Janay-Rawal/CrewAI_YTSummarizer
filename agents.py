@@ -1,5 +1,12 @@
-from crewai import Agent
+from crewai import Agent, LLM
 from tools import yt_tool
+
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
+llm = LLM(model = "llama-3.1-8b-instant")
 
 #Creating content researcher agent
 blog_researcher = Agent(
@@ -9,7 +16,8 @@ blog_researcher = Agent(
     memory = True,
     backstory ="This person is expert in understanding videos in AI, data science, machine learning, and providing suggestions.",
     tools = [yt_tool],
-    allow_delegation = True
+    allow_delegation = True,
+    llm = llm
 )
 
 #Creating blog writer agent with YT tool
